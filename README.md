@@ -20,6 +20,9 @@ Step 5) Insert desired model of choice (current used pot_flower and plant 1)
 Step 6) Set 2D Pose Estimate on Rviz  
 Step 7) Give it the deisred goal on Rviz  
 
+
+[![Watch the video](https://img.youtube.com/vi/hLp5Y-mjLE0/maxresdefault.jpg)](https://youtu.be/hLp5Y-mjLE0)
+
 Note:  
 Coco dataset numbering if you wish to change classes: https://docs.google.com/spreadsheets/d/1qnSM1fJaL26lYNFUW_gbfaOhxmU1uiitWdDOziH4MmM/edit?usp=sharing   
 
