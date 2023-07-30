@@ -42,9 +42,7 @@ install(
 
 install(
   PROGRAMS
-  scripts/yolov8_ros2_pt.py
   scripts/yolov8_ros2_pt_custom.py
-  scripts/yolov8_ros2_subscriber.py
   scripts/yolov8_ros2_subscriber_obstacle_avoid.py
   launch/launch_yolov8.launch.py
   DESTINATION lib/${PROJECT_NAME}
