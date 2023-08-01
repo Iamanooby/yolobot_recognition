@@ -25,12 +25,12 @@ from std_msgs.msg import Float64
 from nav_msgs.msg import Odometry
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 
-
-class Camera_subscriber(Node):
+class Yolo_subscriber(Node):
 
     def __init__(self):
-        super().__init__('camera_subscriber')
+        super().__init__('yolo_subscriber')
 
+        #camera
         self.subscription = self.create_subscription(
             Image,
             '/camera/image_raw',
@@ -38,14 +38,7 @@ class Camera_subscriber(Node):
             10)
         self.subscription 
 
-    def camera_callback(self, data):
-        global img
-        img = bridge.imgmsg_to_cv2(data, "bgr8")
 
-class Yolo_subscriber(Node):
-
-    def __init__(self):
-        super().__init__('yolo_subscriber')
 
         #code from yolov8 inference subscribing and img_publishing
         self.subscription = self.create_subscription(
@@ -100,9 +93,11 @@ class Yolo_subscriber(Node):
 
         self.get_logger().info("Turtlebot3 obstacle detection node has been initialised.")
 
-
+    def camera_callback(self, data):
+        self.img = bridge.imgmsg_to_cv2(data, "bgr8")
+        
     def yolo_callback(self, data):
-        global img
+        img = self.img
         self.object_detected = False
 
         for r in data.yolov8_inference:
@@ -234,6 +229,10 @@ class Yolo_subscriber(Node):
             angle = 360-round(math.atan(abs(centre_of_object-centre_of_picture)/forward_pixel_length)/math.pi*180)#obtain left most point angle
         elif centre_of_object<centre_of_picture:#centre on left side of image
             angle = round(math.atan(abs(centre_of_object-centre_of_picture)/forward_pixel_length)/math.pi*180)#obtain left most point angle
+        
+        
+        if angle>=360 or angle <=0:
+            angle = 0
         obstacle_distance = self.scan_ranges[angle]        
 
 
@@ -261,11 +260,9 @@ class Yolo_subscriber(Node):
 if __name__ == '__main__':
     rclpy.init(args=None)
     yolo_subscriber = Yolo_subscriber()
-    camera_subscriber = Camera_subscriber()
 
     executor = rclpy.executors.MultiThreadedExecutor()
     executor.add_node(yolo_subscriber)
-    executor.add_node(camera_subscriber)
 
     executor_thread = threading.Thread(target=executor.spin, daemon=True)
     executor_thread.start()
