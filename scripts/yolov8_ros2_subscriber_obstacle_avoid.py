@@ -30,17 +30,9 @@ class Yolo_subscriber(Node):
     def __init__(self):
         super().__init__('yolo_subscriber')
 
-        #camera
-        self.subscription = self.create_subscription(
-            Image,
-            '/camera/image_raw',
-            self.camera_callback,
-            10)
-        self.subscription 
+        self.image_width = 640
 
-
-
-        #code from yolov8 inference subscribing and img_publishing
+        #code from yolov8 inference subscribing
         self.subscription = self.create_subscription(
             Yolov8Inference,
             '/Yolov8_Inference',
@@ -49,8 +41,6 @@ class Yolo_subscriber(Node):
         self.subscription 
 
         self.cnt = 0
-
-        self.img_pub = self.create_publisher(Image, "/inference_result_cv2", 1)#if you subscribe to this, you can recreate the image with the bounding box on another node
 
         #####################################
         #code from obstacle avoid
@@ -93,11 +83,10 @@ class Yolo_subscriber(Node):
 
         self.get_logger().info("Turtlebot3 obstacle detection node has been initialised.")
 
-    def camera_callback(self, data):
-        self.img = bridge.imgmsg_to_cv2(data, "bgr8")
-        
+
+
     def yolo_callback(self, data):
-        img = self.img
+
         self.object_detected = False
 
         for r in data.yolov8_inference:
@@ -110,14 +99,11 @@ class Yolo_subscriber(Node):
             self.left_bound = top
             self.right_bound = bottom
             yolo_subscriber.get_logger().info(f"{self.cnt} {class_name} : {top}, {left}, {bottom}, {right}")
-            cv2.rectangle(img, (top, left), (bottom, right), (255, 255, 0))
-            h, w, c = img.shape
-            self.image_width = w
+
+            
             self.cnt += 1
 
         self.cnt = 0
-        img_msg = bridge.cv2_to_imgmsg(img)  
-        self.img_pub.publish(img_msg)
 
     def scan_callback(self, msg):
         self.scan_ranges = msg.ranges
