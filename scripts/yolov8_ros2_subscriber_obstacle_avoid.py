@@ -30,6 +30,7 @@ class Yolo_subscriber(Node):
         super().__init__('yolo_subscriber')
 
         self.image_width = 640
+        self.ceased = False
 
         #code from yolov8 inference subscribing
         self.subscription = self.create_subscription(
@@ -148,18 +149,33 @@ class Yolo_subscriber(Node):
         safety_distance = 1  # unit: m
         self.get_logger().info(f"Potted plant detected at {obstacle_distance}m away at {angle}deg.")
         
-        if obstacle_distance < safety_distance:          
-            nav.cancelTask()
-            # nav.backup(backup_dist=1, backup_speed=0.26, time_allowance=10)
-            twist.linear.x = 0.0
-            twist.angular.z = 0.0
-            self.cmd_vel_pub.publish(twist)    
+        if obstacle_distance < safety_distance and not self.ceased:         
+            self.ceased = True
+
+            # Go to own current pose so new fake goal is added into navgiator object then we can easily cancel
+            goal_pose = PoseStamped()
+            goal_pose.header.frame_id = 'map'
+            goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+            goal_pose.pose.position.x = self.x_act+2.0
+            goal_pose.pose.position.y = self.y_act+0.63
+            goal_pose.pose.orientation.z = self.z_ori
+
+
+            navigator.goToPose(goal_pose)
+
+
+            navigator.cancelTask()
+            
+            navigator.backup(backup_dist=1, backup_speed=0.26, time_allowance=10)#reverse
+
 
 
 
 if __name__ == '__main__':
     rclpy.init(args=None)
-    nav = BasicNavigator()
+    navigator = BasicNavigator()
+    navigator.waitUntilNav2Active()
+
     yolo_subscriber = Yolo_subscriber()
 
     executor = rclpy.executors.MultiThreadedExecutor()
