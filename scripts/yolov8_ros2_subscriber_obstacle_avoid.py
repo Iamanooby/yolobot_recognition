@@ -158,7 +158,7 @@ class Yolo_subscriber(Node):
             goal_pose.header.stamp = navigator.get_clock().now().to_msg()
             goal_pose.pose.position.x = self.x_act+2.0
             goal_pose.pose.position.y = self.y_act+0.63
-            goal_pose.pose.orientation.z = self.z_ori
+            # goal_pose.pose.orientation.z = self.z_ori
 
 
             navigator.goToPose(goal_pose)
