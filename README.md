@@ -2,7 +2,7 @@
 
 Installation Steps:  
 
-Step 1) Install ROS2 Foxy (Galactic should be even better)  
+Step 1) Install ROS2 Humble
 Step 2) Install turtlebot3 PC Setup here: https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/  
 Step 3) Install turtlebot3 simulation here: https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/  
 Step 4) Create a virtual environment like here: https://www.cyberithub.com/how-to-install-virtualenv-on-ubuntu-20-04-lts-focal-fossa/  
