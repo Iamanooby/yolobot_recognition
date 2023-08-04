@@ -166,7 +166,9 @@ class Yolo_subscriber(Node):
 
             navigator.cancelTask()
             
-            navigator.backup(backup_dist=1, backup_speed=0.26, time_allowance=10)#reverse
+            navigator.backup(backup_dist=0.25, backup_speed=0.26, time_allowance=10)#reverse
+        elif obstacle_distance > safety_distance or not self.object_detected:#after backing up to safe distance OR no longer see the object, set cased variable back to false
+            self.ceased = False
 
 
 
