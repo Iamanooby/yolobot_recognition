@@ -21,7 +21,7 @@ Step 6) Set 2D Pose Estimate on Rviz
 Step 7) Give it the deisred goal on Rviz  
 
 
-[![Watch the video](https://img.youtube.com/vi/hLp5Y-mjLE0/maxresdefault.jpg)](https://youtu.be/hLp5Y-mjLE0)
+[![Watch the video](https://img.youtube.com/vi/MWKs34pADp0/maxresdefault.jpg)](https://youtu.be/MWKs34pADp0)
 
 Note:  
 Coco dataset numbering if you wish to change classes: https://docs.google.com/spreadsheets/d/1qnSM1fJaL26lYNFUW_gbfaOhxmU1uiitWdDOziH4MmM/edit?usp=sharing   
